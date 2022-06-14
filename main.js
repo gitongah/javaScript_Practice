@@ -1,65 +1,74 @@
-let computerScore=0;
-let humanScore=0;
+const options=document.querySelectorAll('.options');
 
-let humanChoice= prompt('rock, paper, scissors');
-// converting to lower case for the string not to be case sensitive
-let humanChoice_=humanChoice.toLowerCase();
+let PlayerScore=0;
+let CompScore=0;
 
-console.log('human chose', humanChoice);
+options.forEach((option)=>{
+  option.addEventListener('click',function(){
+    const PlayerInput=this.textContent;
+    const CompOption=['Rock','Paper','Scissors'];
+    const CompInput= CompOption[Math.floor(Math.random()*3)];
 
-let options=['rock','paper', 'scissors'];
-let compChoice= options[Math.floor(Math.random()*options.length)];
+    compareInputs(PlayerInput, CompInput);
+    updateScore()
+    if( checkWinner()){
+      PlayerScore=CompScore=0;
+      updateScore();
+    }
+  });
+});
 
-console.log('computer chose',compChoice);
+function compareInputs(PlayerInput,CompInput){
+  const currentMatch=`${PlayerInput} vs ${CompInput}`;
+  if (PlayerInput===CompInput){
+    alert(`${currentMatch} is a Tie`);
+    return;
+  }
+  //rock
+  if (PlayerInput==='Rock'){
+    if (CompInput==='Scissors'){
+      alert(`${currentMatch} = you win`)
+      PlayerScore++;
+    }else{
+      alert(`${currentMatch}= Computer Wins`);
+      CompScore++;
+    }
+  }
+  //CHECK FOR PAPER
+  else if (PlayerInput==='Paper'){
+    if(CompInput==='Rock'){
+      alert( `${currentMatch}= you win`);
+      PlayerScore++;
 
-if(humanChoice_=='rock' && compChoice=='paper')
-{
-  console.log('paper beats rock you lost this round')
-  computerScore+=1;
-  console.log('computer'+  computerScore+ 'you'+ humanScore)
+    }else{
+      alert(`${currentMatch} = Computer  wins`)
+      CompScore++;
+
+    }
+  }
+  //check for scissors
+  else{
+    if(CompInput==='Paper'){
+      alert(`${currentMatch} = you win`);
+      PlayerScore++;
+
+    }else{
+      alert(`${currentMatch} = Computer Wins`)
+      CompScore++;
+    }
+  }
 }
-else if (humanChoice_ == "rock" && compChoice == "scissors") 
-{
-  console.log("rock beats scissors! You won this round.")
-  humanScore += 1;
-  console.log("Computer: " + computerScore + " You: " + humanScore)
-} 
-else if (humanChoice_ == "rock" && compChoice == "rock") 
-{
-  console.log("There was a tie");
-  console.log("Computer: " + computerScore + " You: " + humanScore);
+function updateScore(){
+  document.getElementById('player-score').textContent=PlayerScore;
+  document.getElementById('comp-score').textContent=CompScore;
 }
-else if (humanChoice_ == "paper" && compChoice == "rock") 
-{
-  console.log("Paper beats rock");
-  humanScore += 1;
-  console.log("Computer: " + computerScore + " You: " + humanScore);
-}
-else if (humanChoice_ == "paper" && compChoice == "scissors") 
-{
-  console.log("Scissors beats paper");
-  computerScore+=1;
-  console.log("Computer: " + computerScore + " You: " + humanScore);
-}
-else if (humanChoice_ == "paper" && compChoice == "paper") 
-{
-  console.log("There was a tie");
-  console.log("Computer: " + computerScore + " You: " + humanScore);
-}
-else if (humanChoice_ == "scissors" && compChoice == "rock") 
-{
-  console.log("Rock beats scissors");
-  computerScore+=1;
-  console.log("Computer: " + computerScore + " You: " + humanScore);
-}
-else if (humanChoice_ == "scissors" && compChoice == "paper") 
-{
-  console.log("Scissors beats paper");
-  humanScore += 1;
-  console.log("Computer: " + computerScore + " You: " + humanScore);
-}
-else if (humanChoice_ == "scissors" && compChoice == "scissors") 
-{
-  console.log("There was a tie");
-  console.log("Computer: " + computerScore + " You: " + humanScore);
+
+function checkWinner(){
+  if (PlayerScore===5 || CompScore===5){
+    const winner= PlayerScore===5 ?'you win the game! Congratulations!': ' Computer wins  the game! try again next time';
+
+    alert(winner);
+    return true;
+  }
+  return false;
 }
